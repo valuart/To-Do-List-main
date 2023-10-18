@@ -1,0 +1,28 @@
+doctype html
+html
+include ../head
+
+          //- AGREGAR categorias
+br         
+div(class="container")
+  div(class="form-group")
+    div(class="row")
+      div( class="card mb-3")
+        div( class="card-body")
+          
+          h4(class="text-center") Agregar Categoria
+          form(action="/categoria/createCategoria", method="post")
+                .form-group
+                div(class="mb-3 ")
+                  input(hidden name='userId' value=user.id)
+                  label(for="titulo" class="col col-form-label") Titulo
+                  div(class="col-sm")
+                    input(name="titulo" type="text"  class="form-control" placeholder="Titulo de la categoria"
+                    autofocus='' required)              
+                
+                
+                .form-group
+                    button.btn.btn-success.btn-block(type='submit') Guardar
+                    
+//- script(document.getElementById('today').value = moment().format('YYYY-MM-DD');)
+include ../footer 

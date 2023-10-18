@@ -1,0 +1,59 @@
+doctype html
+html
+include ../head
+
+          //- AGREGAR TAREAS
+br         
+div(class="container")
+  div(class="form-group")
+    div(class="row")
+      div( class="card mb-3")
+        div( class="card-body")
+          
+          h4(class="text-center") Agregar tarea
+          form(action="/item/createItem", method="post")
+                .form-group
+                div(class="mb-3 ")
+                  input(hidden name='userId' value=user.id)
+                  label(for="titulo" class="col col-form-label") Titulo
+                  div(class="col-sm")
+                    input(name="titulo" type="text"  class="form-control" placeholder="Titulo de la tarea"
+                    autofocus='' required)
+                div(class="mb-3")
+                  label(for="descripcion" class="col col-form-label") Descripción
+                  div(class="col-sm")
+                    textarea(name='descripcion' type="text"  class="form-control" placeholder="Descripción de la tarea" required)
+            
+                div(class="mb-3")
+                  label(for="fec_lim" class="col col-form-label" ) Fecha Limite
+                  div(class="col-sm")
+                    input(name='fecha_limite' type="date"  class="form-control" placeholder="Fecha limite" required min=moment().format("YYYY-MM-DD"))
+                div(class="mb-3")
+                  label(for="prioridad" class="col col-form-label") Prioridad 
+                  div(class="col-sm")
+                    select(name="prioridad" class="form-select" required) 
+                      option(value="Baja") Baja
+                      option(value="Media") Media
+                      option(value="Alta") Alta
+                div(class="mb-3")
+                  label(for="estado" class="col col-form-label") Estado
+                  div(class="col-sm" )
+                    select(name="estado" class="form-select" required) 
+                      option(value="Sin resolver")  Sin resolver
+                      option(value="Resolviendo") Resolviendo
+                      option(value="Resuelto") Resuelto
+                div(class="mb-3")      
+                    label.form-label(for="list"  class="col col-form-label") Lista
+                    div(class="col-sm")
+                      select#list.form-control(name="list" required class="form-select")
+                          if lista.length > 0
+                              option(value="0" default selected) -- ninguna -- 
+                              each list in lista
+                                  option(value=list.id) #{list.titulo}
+                          else
+                              option(value="0" default selected disabled) -- no hay listas --
+                .form-group
+                    button.btn.btn-success.btn-block(type='submit') Guardar
+                    
+//- script(document.getElementById('today').value = moment().format('YYYY-MM-DD');)
+include ../footer 

@@ -1,0 +1,147 @@
+doctype html
+html
+include ../head
+
+        //LISTAR TAREAS
+div(class="container-xxl")
+  div(class="row")
+   div(class="col-lg-12")
+      div(class="table-responsive")              
+        h2(class="text-center mt-3") Listas       
+
+        table(id="tablaListas" style="width: 100%" class="table table-striped table-bordered table-condensed")
+          thead(id="thListas" class="text-center")  
+            tr
+              th(hidden) id
+              th Título              
+              th Estado               
+              th Categoria
+              th(hidden) categoriaId
+              th Fecha de creación
+              th Fecha de resolución                 
+              th Opciones                                
+          tbody(id='tbListas' class="text-center")
+            if(listas)
+              each val in listas
+                tr
+                  td(hidden)= val.id
+                  td= val.titulo                  
+                  td= val.estado 
+                  td= val.categoria_titulo
+                  td(hidden)= val.categoriaId                 
+                  td(data-order=moment(val.createdAt).format('YY/MM/DD'))= moment(val.createdAt).format('DD/MM/YYYY')
+                  if(val.fecha_resolucion)
+                    td(data-order=moment().format('YY/MM/DD'))= moment(val.fecha_resolucion).format('DD/MM/YYYY')
+                  else
+                    td= 'No se ingreso fecha de resolucion'                      
+                  td
+                    div(class="d-flex justify-content-center")
+                      a(href='/lista/itemsLista/'+ val.id  class="btn  btn-secondary me-3") Ver tareas
+                      button(id='btnEditarLista' type="button" class="btn btn-primary me-3" data-toggle="modal" ) Editar                 
+                      //- a(href='/borrar/'+val.id   class="btn btn-danger" onclick="eliminar(this)") Borrar
+                      button(id='btnBorrarLista' type="button" class="btn btn-danger me-3" data-toggle="modal" ) Borrar
+  .row
+                div(class="modal fade" id="modalLista" tabindex="-1" aria-labelledby="modalLista" aria-hidden="true"  role="dialog")
+                    div(class="modal-dialog")
+                        div(class="modal-content")
+                            div(class="modal-header")
+                                h5(class="modal-title" id="myModal") Editar Lista
+                                button(type="button" class="btn-close" data-bs-dismiss="modal") 
+                                
+                            div(class="modal-body")
+                              form(method="post")
+                              
+                                .form-group
+                                input(id="id" name='id' hidden type="text")
+                                div(class="mb-3")
+                                  label(for="titulo" class="col col-form-label") Titulo
+                                  div(class="col-sm")
+                                    input(id='titulo' name="titulo" type="text"  class="form-control" placeholder="Titulo de la lista"
+                                    autofocus='' required)
+                                div(class="mb-3")      
+                                    label.form-label(for="lista"  class="col col-form-label") Categoria
+                                    div(class="col-sm")
+                                      //- input(type="text" id='lista1')
+                                      select(required class="form-select" name="categoria")
+                                           
+                                          if categoria.length > 0
+                                              
+                                              option(id="categoria")
+                                              option(value="0" ) -- ninguna -- 
+                                              each cat in categoria
+                                                  option(value=cat.id) #{cat.titulo}
+                                          else
+                                              option(value="0" default selected disabled) -- no hay listas --
+                               
+                                div(class="mb-3")
+                                  label(for="estado" class="col col-form-label") Estado
+                                  div(class="col-sm" )
+                                    select(id="estado" name="estado" class="form-select" required) 
+                                      option(value="Sin resolver")  Sin resolver
+                                      option(value="Resuelta") Resuelta                                  
+                                div(class="mb-3")
+                                  label(for="fecha_creacion" class="col col-form-label" ) Fecha creacion
+                                  div(class="col-sm")
+                                    input(id='fecha_creacion' name='fecha_creacion' class="form-control")
+                                div(class="mb-3")
+                                  label(for="fec_lim" class="col col-form-label" ) Fecha Resolucion
+                                  div(class="col-sm")
+                                    input(id="fecha_resolucion" name='fecha_resolucion' type="date"  class="form-control" placeholder="Fecha resolucion"  value=moment().format("YYYY-MM-DD"))
+                                
+                                div(class="modal-footer")
+                                  button(type="button" class="btn btn-secondary" data-bs-dismiss="modal") Cerrar
+                                  button(id="btnModalLista")
+  .row
+                div(class="modal fade" id="modalListaBorrar" tabindex="-1" aria-labelledby="modalListaBorrar" aria-hidden="true"  role="dialog")
+                    div(class="modal-dialog")
+                        div(class="modal-content")
+                            div(class="modal-header")
+                                h5(class="modal-title" id="myModal") Editar Lista
+                                button(type="button" class="btn-close" data-bs-dismiss="modal") 
+                                
+                            div(class="modal-body")
+                              form(method="post")
+                              
+                                .form-group
+                                input(id="idb" name='id' hidden type="text")
+                                div(class="mb-3")
+                                  label(for="titulo" class="col col-form-label") Titulo
+                                  div(class="col-sm")
+                                    input(id='titulob' name="titulo" type="text"  class="form-control" placeholder="Titulo de la lista"
+                                    autofocus='' required)
+                                div(class="mb-3")
+                                  label(for="titulo" class="col col-form-label") Categoria
+                                  div(class="col-sm")
+                                    input(id='categoria_titulob' name="categoria" type="text"  class="form-control" disabled )
+                               
+                                div(class="mb-3")
+                                  label(for="estado" class="col col-form-label") Estado
+                                  div(class="col-sm" )
+                                   input(type="text" id="estadob" name="estado"  class="form-control" disabled)                                
+                                div(class="mb-3")
+                                  label(for="fecha_creacion" class="col col-form-label" ) Fecha creacion
+                                  div(class="col-sm")
+                                    input(id='fecha_creacionb' name='fecha_creacion' class="form-control" disabled)
+                                div(class="mb-3")
+                                  label(for="" class="col col-form-label" ) Fecha Resolucion
+                                  div(class="col-sm")
+                                    input(id="fecha_resolucionb" name='fecha_resolucion' type="text"  class="form-control" placeholder="Fecha resolucion" disabled value=moment().format("YYYY-MM-DD"))
+                                
+                                div(class="modal-footer")
+                                  button(type="button" class="btn btn-secondary" data-bs-dismiss="modal") Cerrar
+                                  button(id="btnModalListaBorrar")
+  
+script(src="//cdn.jsdelivr.net/npm/sweetalert2@11") 
+if(alert)
+  script.
+    Swal.fire({
+    title: '#{alertTitle}',       
+    text: '#{alertMessage}',
+    //- text: 'ahhhhhhh',
+    icon: '#{alertIcon}',
+    showConfirmButton:  '#{showConfirmButton}',
+    timer: '#{timer}'
+    }).then(()=>{
+        window.location = '/#{ruta}'
+    })
+include ../footer                           
